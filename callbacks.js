@@ -1,15 +1,15 @@
-const astrosUrl = 'http://api.open-notify.org/astros.json';
-const wikiUrl = 'https://en.wikipedia.org/api/rest_v1/page/summary/';
-const peopleList = document.getElementById('people');
-const btn = document.querySelector('button');
+const astrosUrl = "http://api.open-notify.org/astros.json";
+const wikiUrl = "https://en.wikipedia.org/api/rest_v1/page/summary/";
+const peopleList = document.getElementById("people");
+const btn = document.querySelector("button");
 
 // Make an AJAX request
 function getJSON(url, callback) {
   const xhr = new XMLHttpRequest();
-  xhr.open('GET', url);
+  xhr.open("GET", url);
   xhr.onload = () => {
-    if(xhr.status === 200) {
-      let data = JSON.parse(xhr.responseText); 
+    if (xhr.status === 200) {
+      let data = JSON.parse(xhr.responseText);
       return callback(data);
     }
   };
@@ -18,7 +18,7 @@ function getJSON(url, callback) {
 
 // Generate the markup for each profile
 function generateHTML(data) {
-  const section = document.createElement('section');
+  const section = document.createElement("section");
   peopleList.appendChild(section);
   section.innerHTML = `
     <img src=${data.thumbnail.source}>
@@ -28,18 +28,17 @@ function generateHTML(data) {
   `;
 }
 
-
 //good example
 //btn.addEventListener('click', () => {
-  //getJSON(astrosUrl, console.log);
+//getJSON(astrosUrl, console.log);
 //});
 
-btn.addEventListener('click', (event) => {
-  getJSON(astrosUrl, (json) => { // this was also works withjson in the video
-      json.people.map( person => {
-        getJSON(wikiUrl + person.name, generateHTML );
-      });
-
+btn.addEventListener("click", (event) => {
+  getJSON(astrosUrl, (json) => {
+    // this was also works withjson in the video
+    json.people.map((person) => {
+      getJSON(wikiUrl + person.name, generateHTML);
+    });
   });
   event.target.remove();
 });
@@ -56,7 +55,7 @@ getAstronauts(json) => {
 */
 
 // so we call callback(data)
-// so first time is anonymous(json) which is anonymous(data) 
+// so first time is anonymous(json) which is anonymous(data)
 // giving data.people.map..... (from astros)
 
 // next time is generateHtml(data) (data been data found in wiki)
@@ -65,8 +64,8 @@ getAstronauts(json) => {
 
 // so the above
 // first data is obtained from json(data) from astro url
-//this then iterates over each person inside people and 
-//appends person.name to the wiki via getJson again to create 
+//this then iterates over each person inside people and
+//appends person.name to the wiki via getJson again to create
 // generateHtml(data) from given wiki url (so would
 // effectivley create multiple sections.
 

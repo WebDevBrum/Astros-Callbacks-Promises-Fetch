@@ -1,29 +1,27 @@
-const astrosUrl = 'http://api.open-notify.org/astros.json';
-const wikiUrl = 'https://en.wikipedia.org/api/rest_v1/page/summary/';
-const peopleList = document.getElementById('people');
-const btn = document.querySelector('button');
-
-
+const astrosUrl = "http://api.open-notify.org/astros.json";
+const wikiUrl = "https://en.wikipedia.org/api/rest_v1/page/summary/";
+const peopleList = document.getElementById("people");
+const btn = document.querySelector("button");
 
 function getProfiles(json) {
-  const profiles = json.people.map( person => {
+  const profiles = json.people.map((person) => {
     if (person.name == "Anatoly Ivanishin") {
-      person.name = "Anatoli_Ivanishin"
-  }
-  const craft = person.craft;
-  return fetch(wikiUrl + person.name)
-    .then(response => response.json())
-    .then (profile => {
-      return {...profile, craft};
-    })
-    .catch(err => console.log('Error fetching Wiki:', err))
- });
- return Promise.all(profiles);
+      person.name = "Anatoli_Ivanishin";
+    }
+    const craft = person.craft;
+    return fetch(wikiUrl + person.name)
+      .then((response) => response.json())
+      .then((profile) => {
+        return { ...profile, craft };
+      })
+      .catch((err) => console.log("Error fetching Wiki:", err));
+  });
+  return Promise.all(profiles);
 }
 
 function generateHTML(data) {
-  data.map( person => {
-    const section = document.createElement('section');
+  data.map((person) => {
+    const section = document.createElement("section");
     peopleList.appendChild(section);
     section.innerHTML = `
       <img src=${person.thumbnail.source}>
@@ -35,16 +33,16 @@ function generateHTML(data) {
   });
 }
 
-btn.addEventListener('click', (event) => {
+btn.addEventListener("click", (event) => {
   event.target.textContent = "Loading...";
 
   fetch(astrosUrl)
-    .then (response => response.json())
+    .then((response) => response.json())
     .then(getProfiles)
     .then(generateHTML)
-    .catch( err => {
-      peopleList.innerHTML = '<h3>Something went wrong!</h3>';
+    .catch((err) => {
+      peopleList.innerHTML = "<h3>Something went wrong!</h3>";
       console.log(err);
     })
-    .finally( () => event.target.remove() )
+    .finally(() => event.target.remove());
 });
